@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -60,11 +61,26 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+    #if UNITY_EDITOR
+            if ((Manager.Instance.bestScore == Manager.Instance.score))
+                Manager.Instance.sauvegarder();
+            EditorApplication.ExitPlaymode();
+    #else
+            if((Manager.Instance.bestScore == Manager.Instance.score))
+                Manager.Instance.sauvegarder();
+            Application.Quit();
+    #endif
+        }
     }
 
     void AddPoint(int point)
     {
         m_Points += point;
+        Manager.Instance.score = m_Points;
         ScoreText.text = $"Score : {m_Points}";
     }
 
